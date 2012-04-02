@@ -358,11 +358,14 @@ void change_desktop(const Arg arg) {
 
     int next_view = desktops[arg.i].screen;
     int cur_view = desktops[current_desktop].screen;
+
     // Save current "properties"
     save_desktop(current_desktop); previous_desktop = current_desktop;
     view[cur_view].cd = current_desktop;
+
     if(next_view != cur_view) {
         select_desktop(view[next_view].cd);
+        save_desktop(current_desktop);
     }
     if(head == NULL)
         XWarpPointer(dis, None, root, 0, 0, 0, 0, desktops[current_desktop].x+(desktops[current_desktop].w/2), desktops[current_desktop].h/2);
@@ -618,6 +621,7 @@ void switch_mode(const Arg arg) {
             XUnmapWindow(dis, c->win);
 
     if(mode == 2) master_size = desktops[current_desktop].h * MASTER_SIZE;
+    save_desktop(current_desktop);
     tile();
     update_current();
     warp_pointer();
@@ -989,7 +993,6 @@ void setup() {
     // Select first desktop by default
     for(i=num_screens-1;i>=0;--i) {
         const Arg arg = {.i = i};
-        current_desktop = arg.i;
         change_desktop(arg);
     }
     // To catch maprequest and destroynotify (if other wm running)
