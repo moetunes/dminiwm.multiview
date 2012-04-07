@@ -66,27 +66,27 @@ It allows the "normal" method of tiling window managers(with the new window as t
 ###Recent Changes
 --------------
 
-6/3/12
+2/4/12
 
->	Added option in the config to have new window opened top or bottom of the stack when using atach aside
+>	Added multi monitor support
 
 ###Status
 ------
 
 There are more options in the config file than the original catwm.
 
-  * Fixed the window manager crashing on a bad window error.
-  * Fixed the keyboard shortcuts not working if numlock was on.
-  * Added some functions.
-  * Added an option to focus the window the mouse just moved to.
-  * Fixed a window being destroyed on another desktop creating ghost windows.
-  * Added ability to resize the window on the top of the stack
-  * Added having applications open on specified desktop
-  * Added a click to focus option
-  * Added ability to change back to last opened desktop.
-  * Transient windows are now always floating and always on top
-  * Option in the config file to not show a panel when a window is open.
-  * Last focused window is refocused and the mouse moved to it on desktop change
+  * 
+  * 
+  * 
+  * 
+  * 
+  * 
+  * 
+  * 
+  * 
+  * 
+  * 
+  * 
 
 
 ###Installation
@@ -94,13 +94,20 @@ There are more options in the config file than the original catwm.
 
 Need Xlib, then:
 
-    edit the config.h.def file to suit your needs
-        and save it as config.h.
+edit the config.h.def file to suit your needs
+and save it as config.h.
 
     $ make
     # make install
     $ make clean
 
+Add the appropriate commands to *e.g.* xinitrc to start the xsession
+ with the monitors where you want them
+
+    *e.g.*
+
+    xrandr --output LVDS1 --mode 1366x768
+    xrandr --output VGA1 --mode 1280x1024 --right-of LVDS1
 
 ###Bugs
 ----
