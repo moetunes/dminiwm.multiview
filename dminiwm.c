@@ -444,7 +444,6 @@ void client_to_desktop(const Arg arg) {
             select_desktop(tmp2);
         }
     }
-
 }
 
 void save_desktop(int i) {
@@ -734,6 +733,8 @@ void maprequest(XEvent *e) {
     XGetWindowAttributes(dis, ev->window, &attr);
     if(attr.override_redirect) return;
 
+    int y=0;
+    if(TOP_PANEL == 0) y = panel_size;
     // For fullscreen mplayer (and maybe some other program)
     client *c;
 
@@ -747,6 +748,8 @@ void maprequest(XEvent *e) {
    	Window trans = None;
     if (XGetTransientForHint(dis, ev->window, &trans) && trans != None) {
         add_window(ev->window, 1); XMapWindow(dis, ev->window);
+        if((attr.y + attr.height) > sh)
+            XMoveResizeWindow(dis,ev->window,attr.x,y,attr.width,attr.height-10);
         XSetWindowBorderWidth(dis,ev->window,BORDER_WIDTH);
         XSetWindowBorder(dis,ev->window,win_focus);
         update_current();
@@ -927,7 +930,7 @@ void logger(const char* e) {
 }
 
 void setup() {
-    int i, j, k=0;
+    int i, j;
 
     // Install a signal
     sigchld(0);
@@ -979,10 +982,10 @@ void setup() {
     XModifierKeymap *modmap;
     numlockmask = 0;
     modmap = XGetModifierMapping(dis);
-    for (k = 0; k < 8; k++) {
+    for (i = 0; i < 8; i++) {
         for (j = 0; j < modmap->max_keypermod; j++) {
-            if(modmap->modifiermap[k * modmap->max_keypermod + j] == XKeysymToKeycode(dis, XK_Num_Lock))
-                numlockmask = (1 << k);
+            if(modmap->modifiermap[i * modmap->max_keypermod + j] == XKeysymToKeycode(dis, XK_Num_Lock))
+                numlockmask = (1 << i);
         }
     }
     XFreeModifiermap(modmap);
